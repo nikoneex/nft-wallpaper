@@ -1,0 +1,19 @@
+
+<swiper #swiper *ngIf="collection.length > 0 && !refreshing; else noNfts"
+[config]="swiperConfig"
+(swiper)="onSwiper($event)"
+(slideChange)="onSlideChange($event)"
+class="wallpaper-container"
+>
+    <ng-template swiperSlide *ngFor="let nft of collection; index as i">
+        <img class="image rounded-2xl drop-shadow-2xl" [src]="nft.image_url" alt="">
+    </ng-template>
+</swiper>
+
+<ng-template #noNfts>
+    <div class="fs-container flex justify-center items-center">
+        <div class="no-nft-message p-8 text-sky-200 comfortaa-b text-2xl rounded-2xl">
+            hit spacebar <span class="material-icons enter-key mx-2 text-sky-200 bg-sky-50">space_bar</span> to load NFTs
+        </div>
+    </div>
+</ng-template>

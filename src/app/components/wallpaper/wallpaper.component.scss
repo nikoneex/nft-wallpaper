@@ -1,0 +1,58 @@
+@import '~swiper/scss';
+@import '~swiper/scss/autoplay';
+@import '~swiper/scss/keyboard';
+@import '~swiper/scss/pagination';
+@import '~swiper/scss/scrollbar';
+@import '~swiper/scss/zoom';
+
+.image {
+    max-width: 80vw;
+    max-height: 80vh;
+    min-height: 60vh;
+}
+
+.wallpaper-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-swiper {
+    height: 100%;
+}
+
+.no-nft-message {
+    height: fit-content;
+    width: fit-content;
+}
+
+.enter-key {
+    border: 4px solid;
+    border-radius: 8px;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    opacity: 80%;
+    font-size: 2rem;
+}
+
+.swiper-slide-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #fff;
+  height: 100%;
+  max-width: 600px;
+  margin: auto;
+  border-radius: 20px;
+}
+
+.swiper-slide {
+    display: flex!important;
+    justify-content: center;
+    align-items: center;
+}

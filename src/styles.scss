@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Koulen&display=swap');
+
+html, body { height: 100%; }
+body { margin: 0; font-family: "Comfortaa", cursive!important; }
+
+
+.fs-container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.comfortaa-b {
+    font-family: "Comfortaa", cursive!important;
+    font-weight: 700;
+}

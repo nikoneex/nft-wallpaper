@@ -1,0 +1,19 @@
+.drawer {
+    top: -13rem;
+}
+
+.toolbar-container {
+    > div {
+        height: 13rem;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        > div {
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            > .flex {
+                width: 33.333%;
+            }
+        }
+    }
+}
