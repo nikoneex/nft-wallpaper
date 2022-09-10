@@ -3,7 +3,7 @@ import { Subject, Subscription } from 'rxjs';
 import SwiperCore, { Keyboard, Pagination, Navigation, Virtual, SwiperOptions, Autoplay } from 'swiper';
 import { INft } from 'src/app/models/nft';
 import * as _ from 'lodash'
-import { SwiperConfigService } from 'src/app/services/swiper-config.service';
+import { SettingsService } from 'src/app/services/settings.service';
 import { SwiperComponent } from 'swiper/angular';
 import { WallpaperService } from 'src/app/services/wallpaper.service';
 import { User } from 'src/app/models/user';
@@ -32,12 +32,12 @@ export class WallpaperComponent implements OnInit, OnDestroy {
   refreshing = false;
 
   constructor(
-    private swiper: SwiperConfigService,
+    private settings: SettingsService,
     private cdref: ChangeDetectorRef,
     private wps: WallpaperService
   ) { 
-    this.swiperConfig = this.swiper.config;
-    this._config = this.swiper.configSubscription.subscribe( config => {
+    this.swiperConfig = this.settings.config;
+    this._config = this.settings.configSubscription.subscribe( config => {
       this.refreshing = true;
       this.swiperConfig = config;
       this.cdref.detectChanges();

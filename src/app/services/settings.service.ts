@@ -5,7 +5,7 @@ import { SwiperOptions } from 'swiper';
 @Injectable({
   providedIn: 'root'
 })
-export class SwiperConfigService {
+export class SettingsService {
 
   config: SwiperOptions = {
     slidesPerView: 2,
@@ -17,6 +17,8 @@ export class SwiperConfigService {
     keyboard: { enabled: true },
   }
 
+  bgColor = 'bg-sky-100';
+  bgColorSubscription: Subject<string> = new Subject<string>()
   
 
   configSubscription: Subject<SwiperOptions> = new Subject<SwiperOptions>()
@@ -32,6 +34,11 @@ export class SwiperConfigService {
   // };
 
   constructor() { 
+  }
+
+  updateBgColor(color: string) {
+    this.bgColor = color;
+    this.bgColorSubscription.next(this.bgColor);
   }
 
 

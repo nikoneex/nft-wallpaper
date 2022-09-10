@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SwiperConfigService } from './swiper-config.service';
+import { SettingsService } from './settings.service';
 
 describe('SwiperConfigService', () => {
-  let service: SwiperConfigService;
+  let service: SettingsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SwiperConfigService);
+    service = TestBed.inject(SettingsService);
   });
 
   it('should be created', () => {

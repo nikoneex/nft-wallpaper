@@ -1,12 +1,12 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { AlchemyService } from 'src/app/services/alchemy.service';
 import { faExpand, faPlus, faSun, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
-import { SwiperConfigService } from 'src/app/services/swiper-config.service';
+import { SettingsService } from 'src/app/services/settings.service';
 import { SwiperOptions } from 'swiper';
 import { Subscription, Observable, startWith, map, Subject } from 'rxjs';
 import * as _ from 'lodash'
 import { BlockdaemonService } from 'src/app/services/blockdaemon.service';
-import {FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { ICollectionModel } from 'src/app/models/nft';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { WallpaperService } from 'src/app/services/wallpaper.service';
@@ -46,6 +46,18 @@ export class ToolbarComponent implements OnInit {
   isFullscreen: boolean = false;
   isDarkmode: boolean = false;
   isAutoplay: boolean = false;
+  bgColor: string = 'bg-sky-100';
+  _bgColor: Subscription;
+
+  colorPalette: any = {
+    colors: [
+      'slate', 'stone', 'red', 'orange', 
+      'amber', 'yellow', 'lime', 'green', 'emerald', 
+      'teal', 'cyan', 'sky', 'blue', 'indigo', 
+      'violet', 'purple', 'pink', 'rose'],
+    variants: []
+  }
+  colors: any[] = [];
 
   swiperConfig: SwiperOptions = {};
   _configSubscription: Subscription;
@@ -56,19 +68,23 @@ export class ToolbarComponent implements OnInit {
   constructor(
     private as: AlchemyService,
     private bd: BlockdaemonService,
-    private swiper: SwiperConfigService,
+    private settings: SettingsService,
     private wps: WallpaperService
   ) {
     this.addressVal = this.as.address;
-    this.swiperConfig = this.swiper.config;
-    this._configSubscription = this.swiper.configSubscription.subscribe( config => {
+    this.swiperConfig = this.settings.config;
+    this._configSubscription = this.settings.configSubscription.subscribe( config => {
       this.swiperConfig = config;
       console.log(this.swiperConfig)
+    });
+    this._bgColor = this.settings.bgColorSubscription.subscribe( color => {
+      this.bgColor = color;
     })
   }
 
   ngOnInit(): void {
     this.checkWakeLock();
+    this.colors = this.getColors(this.colorPalette);
   }
 
   async checkWakeLock(){
@@ -89,10 +105,41 @@ export class ToolbarComponent implements OnInit {
       if(e.code == 'ArrowUp' || e.code == 'ArrowDown' || e.code == 'ArrowLeft' || e.code == 'ArrowRight'){
         return
       } else {
-        // this.bd.searchByName(name).subscribe(res => {
-        //   this.results = res.data;
-        //   this.filteredResults.next(res.data);
-        // })
+        this.bd.searchByName(name).subscribe(res => {
+          this.results = res.data;
+          this.filteredResults.next(res.data);
+        })
+        // let data: any = [
+        //   {
+        //   name: 'Niko',
+        //   id: '',
+        //   logo: '',
+        //   verified: false,
+        //   contracts: ['']
+        //   },
+        //   {
+        //   name: 'Carmel',
+        //   id: '',
+        //   logo: '',
+        //   verified: false,
+        //   contracts: ['']
+        //   },
+        //   {
+        //   name: 'Dylan',
+        //   id: '',
+        //   logo: '',
+        //   verified: false,
+        //   contracts: ['']
+        //   },
+        //   {
+        //   name: 'Dad',
+        //   id: '',
+        //   logo: '',
+        //   verified: false,
+        //   contracts: ['']
+        //   },
+        // ]
+        // this.filteredResults.next(data)
       }
     }
   }
@@ -126,7 +173,7 @@ export class ToolbarComponent implements OnInit {
     delay = delaySteps[value] * 1000;
 
     this.swiperConfig.autoplay = { delay };
-    this.swiper.updateConfig(this.swiperConfig);
+    this.settings.updateConfig(this.swiperConfig);
   }
 
 
@@ -135,6 +182,29 @@ export class ToolbarComponent implements OnInit {
     this.bd.getAssetsByWallet(address).subscribe( collection => {
       this.wps.collectionSubscription.next(collection.data);
     })
+  }
+
+  getColors(colorPallete: any){
+    let bgColors: any[] = []
+    _.each(colorPallete.colors, color => {
+      _.each(colorPallete.variants, variant => {
+        let bgColor = `bg-${color}-${variant}`
+        bgColors.push(bgColor)
+      })
+    })
+    // let neutral = ['bg-neutral-800', 'bg-neutral-700', 'bg-neutral-600', 'bg-neutral-500', 'bg-neutral-400', 'bg-neutral-300', 'bg-neutral-200'];
+    // _.each(neutral, item => {
+    //   bgColors.unshift(item)
+    // })
+    return bgColors
+  }
+
+  updateBgColor(color: string) {
+    this.settings.updateBgColor(color);
+  }
+
+  resetBgColor() {
+    this.settings.updateBgColor('bg-zinc-700');
   }
 
   toggleDarkmode(isDarkmode: boolean) {
@@ -149,7 +219,7 @@ export class ToolbarComponent implements OnInit {
     let offAutoplay = _.cloneDeep(this.swiperConfig);
     offAutoplay.autoplay = false;
 
-    isAutoplay ? this.swiper.updateConfig(onAutoplay) : this.swiper.updateConfig(offAutoplay)
+    isAutoplay ? this.settings.updateConfig(onAutoplay) : this.settings.updateConfig(offAutoplay)
   }
 
   toggleFullscreen() {

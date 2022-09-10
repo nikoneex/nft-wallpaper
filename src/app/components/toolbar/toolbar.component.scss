@@ -1,19 +1,95 @@
 .drawer {
     top: -13rem;
+    padding-bottom: 4rem;
+}
+
+.toolbar-label {
+    font-family: "Comfortaa", cursive !important;
+    margin-top: 1rem!important;
 }
 
 .toolbar-container {
     > div {
-        height: 13rem;
-        width: 100%;
         position: fixed;
-        bottom: 0;
+        right: 0;
+        height: 100%;
+        padding-top: 2rem;
+        padding-right: 2rem;
+        padding-bottom: 2rem;
         > div {
-            border-top-left-radius: 24px;
-            border-top-right-radius: 24px;
+            width: 18rem;
+            height: 100%;
             > .flex {
-                width: 33.333%;
             }
         }
     }
 }
+
+.tool-container {
+    width: 100%!important;
+}
+
+.color-picker {
+    position: absolute;
+    right: 3.4em;
+    width: 256px;
+    height: 256px;
+    margin-top: 2rem;
+    overflow-y: auto;
+    .color {
+        height: 28px;
+        width: 28px;
+        margin: 2px;
+        border-radius: 9999px;
+        cursor: pointer;
+        @apply hover:outline hover:outline-offset-2 hover:outline-sky-200 hover:z-10;
+    }
+}
+
+#search-input {
+    caret-color: rgb(226 232 240)!important;
+}
+
+
+#colorbtn {
+    height: 20px!important;
+    width: 20px!important;
+}
+
+#resetbtn {
+    margin-top: 2px;
+    margin-right: 4px;
+}
+
+::ng-deep {
+    .mat-slide-toggle {
+        // transform: scale(1.5)!important;
+        &:hover {
+            background-color: transparent!important;
+        }
+    }
+    .mat-form-field-infix {
+        background-color: rgb(39 39 42);
+        height: 24px;
+        border-radius: 24px;
+        width: 224px!important;
+        height: 36px;
+        margin-top: 0.5rem;
+        border-top: 0!important;
+    }
+    .mat-form-field-wrapper {
+        padding-bottom: 0!important;
+    }
+    .mat-form-field-underline {
+        display: none;
+    }
+    input.mat-input-element {
+        padding-top: .3em!important;
+        padding-left: 1em!important;
+        margin-top: 0!important;
+        color: rgb(226 232 240);
+        font-family: "Comfortaa", cursive !important;
+    }
+    
+}
+

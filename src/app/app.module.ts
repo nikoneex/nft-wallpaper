@@ -19,6 +19,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+
+
+export const customTooltip: MatTooltipDefaultOptions = {
+  showDelay: 1000,
+  hideDelay: 100,
+  touchendHideDelay: 0
+};
 
 @NgModule({
   declarations: [
@@ -41,9 +50,11 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatTabsModule
+    MatTabsModule,
+    MatTooltipModule
   ],
   providers: [
+    {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: customTooltip}
   ],
   bootstrap: [AppComponent]
 })
