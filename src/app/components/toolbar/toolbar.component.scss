@@ -29,6 +29,14 @@
     width: 100%!important;
 }
 
+.autoplay-container {
+    // min-height: 12em;
+}
+
+#delaySlider {
+    width: 60%;
+}
+
 .color-picker {
     position: absolute;
     right: 3.4em;
@@ -43,6 +51,12 @@
         border-radius: 9999px;
         cursor: pointer;
         @apply hover:outline hover:outline-offset-2 hover:outline-sky-200 hover:z-10;
+    }
+}
+
+#autoplay {
+    &:hover {
+        background-color: opacity($color: 0)!important;
     }
 }
 
@@ -89,6 +103,16 @@
         margin-top: 0!important;
         color: rgb(226 232 240);
         font-family: "Comfortaa", cursive !important;
+    }
+
+    .mat-icon-button {
+        border-radius: 4px!important;
+    }
+    .mat-menu-panel {
+        border-radius: 1em!important;
+        button {
+            font-family: "Comfortaa", cursive !important;
+        }
     }
     
 }

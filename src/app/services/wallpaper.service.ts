@@ -9,6 +9,7 @@ export class WallpaperService {
   collection: any[] = [];
   collectionSubscription: Subject<any> = new Subject<any>();
   address: any = '';
+  loadingSubscription: Subject<boolean> = new Subject<boolean>();
 
   constructor() {
     if(localStorage.getItem('walletAddress')){
@@ -31,5 +32,9 @@ export class WallpaperService {
 
   cacheCollection(collection: any[]){
     localStorage.setItem('collection', JSON.stringify(collection))
+  }
+
+  isLoading(loading: boolean) {
+    this.loadingSubscription.next(loading);
   }
 }

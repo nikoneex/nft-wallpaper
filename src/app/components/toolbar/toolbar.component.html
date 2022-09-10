@@ -50,7 +50,7 @@
             #addressInput id="address-input"
             [(ngModel)]="addressVal" 
             x-on:keyup.space.stop
-            (keyup.enter)="loadAddress(addressInput.value); removeFocus('address-input')"
+            (keyup.enter)="loadAddress(addressVal); removeFocus('address-input')"
             type="text" value="tbone" class="w-full mt-2 block px-3 py-2 bg-zinc-800 text-slate-200 border-slate-300 rounded-full text-sm shadow-sm placeholder-slate-400
             focus:outline-none
             disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
@@ -64,23 +64,67 @@
 
       <div class="tool-container flex flex-col">
         <h3 class="text-slate-200 toolbar-label font-bold text-center !mt-4"><i class="fa-solid fa-gears fa-2x"></i></h3>
-        <div class="bg-zinc-700 rounded-2xl p-2 text-center flex justify-between !w-full px-4 py-4">
-          <div class="w-50 flex items-center">
-            <label for="address-input" class="text-slate-200">Autoplay</label>
+     
+        <div 
+        x-data="{ autoplayOpen: false }" class="bg-zinc-700 rounded-2xl p-2 flex flex-col !w-full px-4 py-4 items-center">
+          <div class="w-full flex flex-row justify-between items-center">
+            <label for="autoplay" class="text-slate-200">Autoplay</label>
+            <mat-slide-toggle 
+            id="autoplay"
+            x-on:click="autoplayOpen = !autoplayOpen"
+            [(ngModel)]="isAutoplay" (change)="toggleAutoplay(isAutoplay)"></mat-slide-toggle>
           </div>
-          <div class="w-50 flex flex-col justify-end items-end">
-            <mat-slide-toggle [(ngModel)]="isAutoplay" (change)="toggleAutoplay(isAutoplay)"></mat-slide-toggle>
-            <mat-slider *ngIf="isAutoplay"
-            #delaySlider 
-            thumbLabel
-            [displayWith]="formatLabel"
-            min="0"
-            max="10"
-            step="1"
-            aria-label="units"
-            [disabled]="!isAutoplay"
-            (change)="updateDelay(delaySlider.value)"></mat-slider>
+         
+          <!-- x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+          x-transition:enter-start="translate-y-full"
+          x-transition:enter-end="translate-y-0"
+          x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+          x-transition:leave-start="translate-y-0"
+          x-transition:leave-end="translate-y-full" -->
+          <div 
+          x-show="autoplayOpen"
+      
+          class="autoplay-container w-full flex flex-col">
+
+            <div class="flex flex-row justify-between items-center">
+              <label for="delaySlider" class="text-slate-200/50 text-xs">Effect</label>
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Transition menu" class="px-2">
+                <i class="fa-solid fa-bolt text-slate-100"></i>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button (click)="updateEffect(0)" mat-menu-item>
+                  <span>Slide</span>
+                </button>
+                <button (click)="updateEffect(1)" mat-menu-item>
+                  <span>Cards</span>
+                </button>
+                <button (click)="updateEffect(2)" mat-menu-item>
+                  <span>Coverflow</span>
+                </button>
+              </mat-menu>
+            </div>
+
+
+            <div class="flex flex-row justify-between items-center">
+              <label for="delaySlider" class="text-slate-200/50 text-xs">Delay</label>
+              <mat-slider
+              #delaySlider 
+              id="delaySlider"
+              thumbLabel
+              [displayWith]="formatLabel"
+              min="0"
+              max="10"
+              step="1"
+              aria-label="units"
+              [disabled]="!isAutoplay"
+              (change)="updateDelay(delaySlider.value)"
+              class="w-full"></mat-slider>
+            </div>
+      
           </div>
+           
+           
+          
         </div>
       </div>
 
@@ -109,7 +153,7 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             >
-              <div class="w-full h-full flex flex-row flex-wrap">
+              <!-- <div class="w-full h-full flex flex-row flex-wrap">
                 <div *ngFor="let color of colors; index as i" 
                 class="color {{color}}" 
                 (click)="updateBgColor(color)"
@@ -126,7 +170,9 @@
                   class="rounded-md text-slate-200 hover:text-sky-200"
                   x-on:click="isOpen = false">Reset</button>
                 </div>
-              </div>
+              </div> -->
+
+              <app-color-picker></app-color-picker>
             </div>
           </div>
           

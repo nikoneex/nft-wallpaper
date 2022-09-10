@@ -21,6 +21,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+import { ColorPickerComponent } from './components/color-picker/color-picker.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 
 export const customTooltip: MatTooltipDefaultOptions = {
@@ -35,6 +38,7 @@ export const customTooltip: MatTooltipDefaultOptions = {
     DashboardPageComponent,
     ToolbarComponent,
     WallpaperComponent,
+    ColorPickerComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +55,9 @@ export const customTooltip: MatTooltipDefaultOptions = {
     ReactiveFormsModule,
     MatInputModule,
     MatTabsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule,
+    MatButtonModule
   ],
   providers: [
     {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: customTooltip}

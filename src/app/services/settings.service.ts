@@ -6,18 +6,34 @@ import { SwiperOptions } from 'swiper';
   providedIn: 'root'
 })
 export class SettingsService {
+  
+
+  slideEffect: SwiperOptions = {
+    effect: 'slide'
+  }
+  cardsEffect: SwiperOptions = {
+    effect: 'cards'
+  }
+  coverflowEffect: SwiperOptions = {
+    slidesPerView: 2,
+    spaceBetween: 300
+  }
+  
+  effects = [this.slideEffect, this.cardsEffect, this.coverflowEffect];
 
   config: SwiperOptions = {
-    slidesPerView: 2,
-    spaceBetween: 100,
+    slidesPerView: 1,
     centeredSlides: true,
+    effect: 'slide',
     virtual: true,
     pagination: false,
     scrollbar: { draggable: true },
     keyboard: { enabled: true },
   }
 
-  bgColor = 'bg-sky-100';
+
+
+  bgColor = 'bg-zinc-700';
   bgColorSubscription: Subject<string> = new Subject<string>()
   
 
@@ -45,6 +61,23 @@ export class SettingsService {
   updateConfig(config: SwiperOptions) {
     this.config = config;
     this.configSubscription.next(this.config);
+  }
+
+  updateEffects(i: number){
+    if(i === 2){
+      this.config.slidesPerView = this.coverflowEffect.slidesPerView;
+      this.config.spaceBetween = this.coverflowEffect.spaceBetween;
+      this.config.effect = 'slide';
+      this.updateConfig(this.config);
+    } else {
+      //default
+      this.config.slidesPerView = 1;
+      this.config.spaceBetween = 0;
+      //
+      this.config.effect = this.effects[i].effect;
+      this.updateConfig(this.config);
+    }
+
   }
 
   cacheConfig(config: SwiperOptions) {

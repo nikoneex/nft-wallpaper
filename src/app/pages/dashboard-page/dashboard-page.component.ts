@@ -11,7 +11,7 @@ import { SettingsService } from 'src/app/services/settings.service';
 })
 export class DashboardPageComponent implements OnInit {
 
-  bgColor: string = '';
+  bgColor: string = 'bg-zinc-700';
   _bgColor: Subscription;
 
   constructor(
@@ -19,6 +19,7 @@ export class DashboardPageComponent implements OnInit {
   ) {
     this._bgColor = this.settings.bgColorSubscription.subscribe( color => {
       this.bgColor = color;
+      console.log(this.bgColor)
     })
    }
 

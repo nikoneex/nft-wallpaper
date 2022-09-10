@@ -1,0 +1,8 @@
+.color {
+    height: 28px;
+    width: 28px;
+    margin: 2px;
+    border-radius: 9999px;
+    cursor: pointer;
+    @apply hover:outline hover:outline-offset-2 hover:outline-sky-200 hover:z-10;
+}

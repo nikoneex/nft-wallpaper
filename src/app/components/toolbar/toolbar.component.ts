@@ -10,7 +10,6 @@ import { FormControl } from '@angular/forms';
 import { ICollectionModel } from 'src/app/models/nft';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { WallpaperService } from 'src/app/services/wallpaper.service';
-import { add } from 'lodash';
 
 
 @Component({
@@ -28,6 +27,7 @@ export class ToolbarComponent implements OnInit {
   @ViewChild('addressInput') addressInput!: HTMLInputElement;
   @ViewChild('fullscreenBtn') fsBtn!: HTMLButtonElement;
   @ViewChild('auto', { read: MatAutocompleteTrigger }) autocomplete!: MatAutocompleteTrigger;
+
 
   form: FormControl = new FormControl();
   results: ICollectionModel[] = [
@@ -55,7 +55,7 @@ export class ToolbarComponent implements OnInit {
       'amber', 'yellow', 'lime', 'green', 'emerald', 
       'teal', 'cyan', 'sky', 'blue', 'indigo', 
       'violet', 'purple', 'pink', 'rose'],
-    variants: []
+    variants: ['200', '300', '400', '500', '600', '700', '800']
   }
   colors: any[] = [];
 
@@ -75,7 +75,6 @@ export class ToolbarComponent implements OnInit {
     this.swiperConfig = this.settings.config;
     this._configSubscription = this.settings.configSubscription.subscribe( config => {
       this.swiperConfig = config;
-      console.log(this.swiperConfig)
     });
     this._bgColor = this.settings.bgColorSubscription.subscribe( color => {
       this.bgColor = color;
@@ -150,6 +149,7 @@ export class ToolbarComponent implements OnInit {
 
     this.bd.getAssetsByContract(collection?.contracts[0]).subscribe(res => {
       console.log(res)
+    }, error => {
     })
   }
 
@@ -179,8 +179,16 @@ export class ToolbarComponent implements OnInit {
 
   loadAddress(address: string){
     this.wps.cacheAddress(address);
-    this.bd.getAssetsByWallet(address).subscribe( collection => {
-      this.wps.collectionSubscription.next(collection.data);
+    this.wps.isLoading(true);
+    // this.bd.getAssetsByWallet(address).subscribe( collection => {
+    //   this.loading = false;
+    //   this.wps.collectionSubscription.next(collection.data);
+    // })
+    this.as.getNftsByWallet().subscribe( res => {
+      this.wps.isLoading(false);
+      this.wps.collectionSubscription.next(res.ownedNfts)
+    }, error => {
+      this.wps.isLoading(false);
     })
   }
 
@@ -220,6 +228,10 @@ export class ToolbarComponent implements OnInit {
     offAutoplay.autoplay = false;
 
     isAutoplay ? this.settings.updateConfig(onAutoplay) : this.settings.updateConfig(offAutoplay)
+  }
+
+  updateEffect(i: number){
+    this.settings.updateEffects(i);
   }
 
   toggleFullscreen() {

@@ -8,7 +8,7 @@
 .image {
     max-width: 80vw;
     max-height: 80vh;
-    min-height: 60vh;
+    min-height: 80vh;
 }
 
 .wallpaper-container {
@@ -55,4 +55,8 @@
     display: flex!important;
     justify-content: center;
     align-items: center;
+}
+
+.swiper-slide-shadow {
+    background: none!important;
 }
