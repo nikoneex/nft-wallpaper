@@ -30,8 +30,8 @@ export class AlchemyService {
     localStorage.clear();
   }
 
-  getNftsByWallet(): Observable<any> {
-    let path = `${baseUrl}/getNFTs?owner=${this.address}&filters[]=SPAM&filters[]=AIRDROPS`;
+  getNftsByWallet(address: string): Observable<any> {
+    let path = `${baseUrl}/getNFTs?owner=${address}&filters[]=SPAM&filters[]=AIRDROPS`;
     return this.http.get(path as any)
   }
 

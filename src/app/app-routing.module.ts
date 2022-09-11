@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: DashboardPageComponent
+  },
+  {
+    path: 'wallet/:address',
+    component: DashboardPageComponent
   }
 ];
 

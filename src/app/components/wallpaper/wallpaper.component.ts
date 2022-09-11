@@ -48,8 +48,10 @@ export class WallpaperComponent implements OnInit, OnDestroy {
     })
     this.collection = this.wps.collection;
     this._collection = this.wps.collectionSubscription.subscribe( collection => {
+      this.refreshing = true;
       this.collection = collection;
       this.cdref.detectChanges();
+      this.refreshing = false;
     })
     this._loading = this.wps.loadingSubscription.subscribe( loading => {
       this.loading = loading;

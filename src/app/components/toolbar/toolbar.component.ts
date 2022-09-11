@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
 import { AlchemyService } from 'src/app/services/alchemy.service';
 import { faExpand, faPlus, faSun, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -27,10 +27,11 @@ export class ToolbarComponent implements OnInit {
   @ViewChild('addressInput') addressInput!: HTMLInputElement;
   @ViewChild('fullscreenBtn') fsBtn!: HTMLButtonElement;
   @ViewChild('auto', { read: MatAutocompleteTrigger }) autocomplete!: MatAutocompleteTrigger;
+  @Input() loadByUrl: boolean = false;
 
 
   form: FormControl = new FormControl();
-  results: ICollectionModel[] = [
+  collection: ICollectionModel[] = [
     {
       name: '',
       contracts: [],
@@ -40,7 +41,6 @@ export class ToolbarComponent implements OnInit {
     }
   ];
   filteredResults: Subject<ICollectionModel[]> = new Subject<ICollectionModel[]>();
-
 
   addressVal: string = '';
   isFullscreen: boolean = false;
@@ -105,7 +105,7 @@ export class ToolbarComponent implements OnInit {
         return
       } else {
         this.bd.searchByName(name).subscribe(res => {
-          this.results = res.data;
+          this.collection = res.data;
           this.filteredResults.next(res.data);
         })
         // let data: any = [
@@ -144,7 +144,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   loadCollection(e:MatAutocompleteSelectedEvent) {
-    let collection = _.find(this.results, {name: e.option.value})
+    let collection = _.find(this.collection, {name: e.option.value})
     console.log(collection)
 
     this.bd.getAssetsByContract(collection?.contracts[0]).subscribe(res => {
@@ -179,16 +179,16 @@ export class ToolbarComponent implements OnInit {
 
   loadAddress(address: string){
     this.wps.cacheAddress(address);
+    this.wps.collectionSubscription.next([]);
     this.wps.isLoading(true);
     // this.bd.getAssetsByWallet(address).subscribe( collection => {
     //   this.loading = false;
     //   this.wps.collectionSubscription.next(collection.data);
     // })
-    this.as.getNftsByWallet().subscribe( res => {
+    this.as.getNftsByWallet(address).subscribe( res => {
+      this.collection = res.ownedNfts;
       this.wps.isLoading(false);
       this.wps.collectionSubscription.next(res.ownedNfts)
-    }, error => {
-      this.wps.isLoading(false);
     })
   }
 
@@ -252,5 +252,10 @@ export class ToolbarComponent implements OnInit {
 
   removeFocus(id: string) {
     document.getElementById(id)?.blur();
+  }
+
+  shuffle(){
+    let shuffled = _.shuffle(this.collection);
+    this.wps.updateCollection(shuffled);
   }
 }

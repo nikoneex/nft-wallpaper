@@ -5,7 +5,7 @@
 (slideChange)="onSlideChange($event)"
 class="wallpaper-container"
 >
-    <ng-template swiperSlide *ngFor="let nft of collection; index as i">
+    <ng-template swiperSlide *ngFor="let nft of parseNfts(collection); index as i">
         <img class="image rounded-2xl drop-shadow-2xl" [src]="nft.media[0].gateway" alt="">
     </ng-template>
 </swiper>
