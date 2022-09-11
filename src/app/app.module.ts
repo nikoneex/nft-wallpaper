@@ -41,7 +41,7 @@ export const customTooltip: MatTooltipDefaultOptions = {
     ColorPickerComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
