@@ -10,6 +10,10 @@ const routes: Routes = [
   {
     path: 'wallet/:address',
     component: DashboardPageComponent
+  },
+  {
+    path: 'collection/:contract',
+    component: DashboardPageComponent
   }
 ];
 

@@ -40,6 +40,8 @@ export class ToolbarComponent implements OnInit {
       verified: false
     }
   ];
+  _collection: Subscription;
+
   filteredResults: Subject<ICollectionModel[]> = new Subject<ICollectionModel[]>();
 
   addressVal: string = '';
@@ -78,6 +80,9 @@ export class ToolbarComponent implements OnInit {
     });
     this._bgColor = this.settings.bgColorSubscription.subscribe( color => {
       this.bgColor = color;
+    });
+    this._collection = this.wps.collectionSubscription.subscribe( collection => {
+      this.collection = collection
     })
   }
 
@@ -178,6 +183,7 @@ export class ToolbarComponent implements OnInit {
 
 
   loadAddress(address: string){
+    if ( address.length == 0 ) return
     this.wps.cacheAddress(address);
     this.wps.collectionSubscription.next([]);
     this.wps.isLoading(true);
