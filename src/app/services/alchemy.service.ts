@@ -35,6 +35,11 @@ export class AlchemyService {
     return this.http.get(path as any)
   }
 
+  getNftsByContract(contract: string): Observable<any> {
+    let path = `${baseUrl}/getNFTsForCollection?contractAddress=${contract}&withMetadata=true`;
+    return this.http.get(path as any)
+  }
+
   
   
 }
