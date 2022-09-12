@@ -2,3 +2,8 @@
   command = "npm run prerender"
   functions = "./functions"
   publish = "dist/nft-wallpaper/browser"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
