@@ -30,7 +30,7 @@ export class ColorPickerComponent implements OnInit {
   constructor(
     private settings: SettingsService
   ) {
-    this._bgColor = this.settings.bgColorSubscription.subscribe( color => {
+    this._bgColor = this.settings.bgColor$.subscribe( color => {
       this.bgColor = color;
     })
   }

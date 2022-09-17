@@ -7,9 +7,9 @@ import { Subject } from 'rxjs';
 export class WallpaperService {
 
   collection: any[] = [];
-  collectionSubscription: Subject<any> = new Subject<any>();
+  collection$: Subject<any> = new Subject<any>();
   address: any = '';
-  loadingSubscription: Subject<boolean> = new Subject<boolean>();
+  loading$: Subject<boolean> = new Subject<boolean>();
 
   constructor() {
     if(localStorage.getItem('walletAddress')){
@@ -27,7 +27,7 @@ export class WallpaperService {
 
   updateCollection(collection: any[]) {
     this.collection = collection;
-    this.collectionSubscription.next(collection);
+    this.collection$.next(collection);
   }
 
   cacheCollection(collection: any[]){
@@ -35,6 +35,6 @@ export class WallpaperService {
   }
 
   isLoading(loading: boolean) {
-    this.loadingSubscription.next(loading);
+    this.loading$.next(loading);
   }
 }

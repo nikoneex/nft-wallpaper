@@ -4,12 +4,14 @@ import { faExpand, faPlus, faSun, faPlayCircle } from '@fortawesome/free-solid-s
 import { SettingsService } from 'src/app/services/settings.service';
 import { SwiperOptions } from 'swiper';
 import { Subscription, Observable, startWith, map, Subject } from 'rxjs';
-import * as _ from 'lodash'
 import { BlockdaemonService } from 'src/app/services/blockdaemon.service';
 import { FormControl } from '@angular/forms';
 import { ICollectionModel } from 'src/app/models/nft';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { WallpaperService } from 'src/app/services/wallpaper.service';
+import * as _ from 'lodash'
+import { MatInput } from '@angular/material/input';
+
 
 
 @Component({
@@ -48,6 +50,7 @@ export class ToolbarComponent implements OnInit {
   isFullscreen: boolean = false;
   isDarkmode: boolean = false;
   isAutoplay: boolean = false;
+  showClock: boolean = false;
   bgColor: string = 'bg-sky-100';
   _bgColor: Subscription;
 
@@ -75,15 +78,16 @@ export class ToolbarComponent implements OnInit {
   ) {
     this.addressVal = this.as.address;
     this.swiperConfig = this.settings.config;
-    this._configSubscription = this.settings.configSubscription.subscribe( config => {
+    this._configSubscription = this.settings.config$.subscribe( config => {
       this.swiperConfig = config;
     });
-    this._bgColor = this.settings.bgColorSubscription.subscribe( color => {
+    this._bgColor = this.settings.bgColor$.subscribe( color => {
       this.bgColor = color;
     });
-    this._collection = this.wps.collectionSubscription.subscribe( collection => {
+    this._collection = this.wps.collection$.subscribe( collection => {
       this.collection = collection
-    })
+    });
+    this.onNameSearch = _.debounce(this.onNameSearch, 800);
   }
 
   ngOnInit(): void {
@@ -149,13 +153,17 @@ export class ToolbarComponent implements OnInit {
   }
 
   loadCollection(e:MatAutocompleteSelectedEvent) {
+    this.wps.isLoading(true);
     let collection = _.find(this.collection, {name: e.option.value})
-    console.log(collection)
-
-    this.bd.getAssetsByContract(collection?.contracts[0]).subscribe(res => {
-      console.log(res)
-    }, error => {
+    this.as.getNftsByContract(collection?.contracts[0]).subscribe( res => {
+      this.wps.isLoading(false);
+      this.wps.updateCollection(res.nfts)
     })
+
+    // this.bd.getAssetsByContract(collection?.contracts[0]).subscribe(res => {
+    //   console.log(res)
+    // }, error => {
+    // })
   }
 
 
@@ -185,7 +193,7 @@ export class ToolbarComponent implements OnInit {
   loadAddress(address: string){
     if ( address.length == 0 ) return
     this.wps.cacheAddress(address);
-    this.wps.collectionSubscription.next([]);
+    this.wps.collection$.next([]);
     this.wps.isLoading(true);
     // this.bd.getAssetsByWallet(address).subscribe( collection => {
     //   this.loading = false;
@@ -194,7 +202,7 @@ export class ToolbarComponent implements OnInit {
     this.as.getNftsByWallet(address).subscribe( res => {
       this.collection = res.ownedNfts;
       this.wps.isLoading(false);
-      this.wps.collectionSubscription.next(res.ownedNfts)
+      this.wps.collection$.next(res.ownedNfts)
     })
   }
 
@@ -238,6 +246,10 @@ export class ToolbarComponent implements OnInit {
 
   updateEffect(i: number){
     this.settings.updateEffects(i);
+  }
+
+  toggleClock(showClock: boolean) {
+    console.log(showClock)
   }
 
   toggleFullscreen() {

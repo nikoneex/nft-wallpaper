@@ -1,4 +1,5 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
+<app-clock *ngIf="showClock"></app-clock>
+
 <div
   x-data="{ isOpen: false }"
   x-on:keyup.space.window="isOpen = !isOpen"
@@ -20,11 +21,11 @@
         <h3 class="text-slate-200 toolbar-label font-bold text-center"><i class="fa-solid fa-panorama fa-2x"></i></h3>
         <div *ngIf="!loadByUrl" class="bg-zinc-700 rounded-2xl p-2 pt-4 text-center">
           <label for="search-input" class="text-slate-200">Collection</label>
-          <mat-form-field class="example-full-width">
+          <mat-form-field class="example-full-width" >
             <input 
             #collectionsSearch
             id="search-input"
-            x-on:keyup.space.stop type="text" aria-label="Collections Search" matInput [formControl]="form" [matAutocomplete]="auto" 
+            x-on:keyup.space.stop type="text" aria-label="Collections Search" [formControl]="form" matInput name="collectionSearch" [matAutocomplete]="auto" 
             (keyup)="onNameSearch(collectionsSearch.value, $event)"
             [disabled]="true"
             class="w-full mt-2 block px-3 py-2 bg-zinc-800 text-slate-200 border-slate-300 rounded-full text-sm shadow-sm placeholder-slate-400
@@ -34,8 +35,9 @@
             focus:invalid:border-pink-500 focus:invalid:ring-pink-500
             "
             >
-            <mat-autocomplete autoActiveFirstOption #auto (optionSelected)="loadCollection($event)">
-              <mat-option *ngFor="let option of filteredResults | async" [value]="option.name">
+            <mat-autocomplete autoActiveFirstOption #auto (optionSelected)="loadCollection($event); collectionsSearch.value = ''">
+              <mat-option *ngFor="let option of filteredResults | async" [value]="option.name" class="flex flex-row">
+                <img [src]="option.logo" alt="" class="collection-logo">
                 {{ option.name }}
               </mat-option>
             </mat-autocomplete>
@@ -63,8 +65,7 @@
 
         <div *ngIf="loadByUrl" class="">
           <button 
-          #fullscreenBtn 
-          id="fsbtn" 
+          id="load-btn" 
           [routerLink]="''"
           type="button" class="inline-block w-full rounded-md bg-zinc-700 text-slate-200 leading-normal hover:shadow-none hover:bg-sky-200 hover:text-zinc-800 focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out h-11">
             Load Your Own NFTs<i class="fa-regular fa-circle-right ml-4"></i>
@@ -147,42 +148,113 @@
            
           
         </div>
-      </div>
 
 
-      <div class="bg-zinc-700 rounded-2xl p-2 text-center flex justify-between !w-full px-4 py-4 mt-4">
-        <div class="w-50">
-          <label for="address-input" class="text-slate-200">Background</label>
-        </div>
-        <div class="w-50 flex flex-col justify-end items-end">
-          <div 
-          x-data="{ isOpen: false }">
-            <button 
-            #colorBtn 
-            id="colorbtn" 
-            x-on:click="isOpen = !isOpen"
-            (click)="removeFocus('colorbtn')" type="button" class="{{ bgColor == 'bg-zinc-700' ? 'bg-sky-100' : bgColor }} inline-block w-full rounded-full outline outline-2 outline-offset-2 outline-sky-200 text-slate-200 leading-normal uppercase hover:shadow-none hover:bg-sky-200 hover:text-zinc-800 focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-10 w-10">
-            <fa-icon [icon]="faExpand" style="opacity: 0"></fa-icon>
-            </button>
-            <div
-            class="color-picker bg-zinc-700 rounded-2xl p-4 drop-shadow-2xl"
-            x-show="isOpen"
-            x-transition:enter="ease-in-out duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="ease-in-out duration-300"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            >
-
-              <app-color-picker></app-color-picker>
-            </div>
+        <div 
+        x-data="{ showClock: false }" class="bg-zinc-700 rounded-2xl p-2 flex flex-col !w-full px-4 py-4 items-center mt-4">
+          <div class="w-full flex flex-row justify-between items-center">
+            <label for="clock" class="text-slate-200">Clock</label>
+            <mat-slide-toggle 
+            id="clock"
+            x-on:click="showClock = !showClock"
+            [(ngModel)]="showClock" (change)="toggleClock(showClock)"></mat-slide-toggle>
           </div>
+       
+<!--           
+          <div 
+          x-show="showClock"
+      
+          class="autoplay-container w-full flex flex-col">
+
+
+            <div class="flex flex-row justify-between items-center">
+              <label for="delaySlider" class="text-slate-200/50 text-xs">Delay</label>
+              <mat-slider
+              #delaySlider 
+              id="delaySlider"
+              thumbLabel
+              [displayWith]="formatLabel"
+              min="0"
+              max="10"
+              step="1"
+              aria-label="units"
+              [disabled]="!isAutoplay"
+              (change)="updateDelay(delaySlider.value)"
+              class="w-full"></mat-slider>
+            </div>
+
+            <div class="flex flex-row justify-between items-center mt-2">
+              <label for="delaySlider" class="text-slate-200/50 text-xs">Effect</label>
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Transition menu" class="px-2">
+                <i class="fa-solid fa-bolt text-slate-100"></i>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button (click)="updateEffect(0)" mat-menu-item>
+                  <span>Slide</span>
+                </button>
+                <button (click)="updateEffect(1)" mat-menu-item>
+                  <span>Cards</span>
+                </button>
+                <button (click)="updateEffect(2)" mat-menu-item>
+                  <span>Coverflow</span>
+                </button>
+              </mat-menu>
+            </div>
+
+
+            <div class="flex flex-row justify-between items-center mt-2">
+              <label for="delaySlider" class="text-slate-200/50 text-xs">Shuffle</label>
+              <button mat-icon-button aria-label="Shuffle collection menu" class="px-2" (click)="shuffle()">
+                <i class="fa-solid fa-shuffle text-slate-100"></i>
+              </button>
+            </div>
+      
+          </div>
+            -->
+           
           
         </div>
-   
+
+        <div class="bg-zinc-700 rounded-2xl p-2 text-center flex justify-between !w-full px-4 py-4 mt-4">
+          <div class="w-50">
+            <label for="address-input" class="text-slate-200">Background</label>
+          </div>
+          <div class="w-50 flex flex-col justify-end items-end">
+            <div 
+            x-data="{ isOpen: false }">
+              <button 
+              #colorBtn 
+              id="colorbtn" 
+              x-on:click="isOpen = !isOpen"
+              (click)="removeFocus('colorbtn')" type="button" class="{{ bgColor == 'bg-zinc-700' ? 'bg-sky-100' : bgColor }} inline-block w-full rounded-full outline outline-2 outline-offset-2 outline-sky-200 text-slate-200 leading-normal uppercase hover:shadow-none hover:bg-sky-200 hover:text-zinc-800 focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-10 w-10">
+              <fa-icon [icon]="faExpand" style="opacity: 0"></fa-icon>
+              </button>
+              <div
+              class="color-picker bg-zinc-700 rounded-2xl p-4 drop-shadow-2xl"
+              x-show="isOpen"
+              x-transition:enter="ease-in-out duration-300"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="ease-in-out duration-300"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0"
+              >
+  
+                <app-color-picker></app-color-picker>
+              </div>
+            </div>
+            
+          </div>
+     
+  
+        </div>
+
 
       </div>
+
+
+
+     
 
  
  

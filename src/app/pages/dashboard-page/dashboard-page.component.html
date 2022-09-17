@@ -1,4 +1,7 @@
 <div class="background-color {{bgColor}}">
-    <app-toolbar [loadByUrl]="loadByUrl"></app-toolbar>
-    <app-wallpaper></app-wallpaper>
+    <app-toolbar *ngIf="!isMobile" [loadByUrl]="loadByUrl"></app-toolbar>
+    <app-wallpaper *ngIf="!isMobile"></app-wallpaper>
+
+    <app-m-toolbar *ngIf="isMobile" [loadByUrl]="loadByUrl"></app-m-toolbar>
+    <app-m-feed-view *ngIf="isMobile"></app-m-feed-view>
 </div>

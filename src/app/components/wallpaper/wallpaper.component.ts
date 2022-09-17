@@ -40,20 +40,20 @@ export class WallpaperComponent implements OnInit, OnDestroy {
     private wps: WallpaperService
   ) { 
     this.swiperConfig = this.settings.config;
-    this._config = this.settings.configSubscription.subscribe( config => {
+    this._config = this.settings.config$.subscribe( config => {
       this.refreshing = true;
       this.swiperConfig = config;
       this.cdref.detectChanges();
       this.refreshing = false;
     })
     this.collection = this.wps.collection;
-    this._collection = this.wps.collectionSubscription.subscribe( collection => {
+    this._collection = this.wps.collection$.subscribe( collection => {
       this.refreshing = true;
       this.collection = collection;
       this.cdref.detectChanges();
       this.refreshing = false;
     })
-    this._loading = this.wps.loadingSubscription.subscribe( loading => {
+    this._loading = this.wps.loading$.subscribe( loading => {
       this.loading = loading;
     })
   }

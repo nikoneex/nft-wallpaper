@@ -1,0 +1,7 @@
+<div class="feed-container z-100">
+    <ng-container *ngFor="let nft of collection; index as i" class="bg-transparent">
+        <div [ngClass]="{'layout2': feedLayout == 2}">
+            <img [ngClass]="{'rounded-2xl': feedLayout == 2}" class="image drop-shadow-2xl" [src]="nft.media[0].gateway" alt="">
+        </div>
+    </ng-container>
+</div>
