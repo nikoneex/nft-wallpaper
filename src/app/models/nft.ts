@@ -30,7 +30,7 @@ export interface IMediaModel {
 }
 
 export interface ICollectionModel {
-    contracts: string[]
+    contracts: any[]
     id: string
     logo: string
     name: string

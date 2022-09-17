@@ -3,8 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 
 const apiKey = 'U8jB2Za4EHMgRE56k8oAKD4HQkklBQmb3xjLYt7-WuZGmdHF'
-// const baseUrl = 'https://ubiquity.api.blockdaemon.com/universal/v1/nft/ethereum/mainnet';
-const baseUrl = 'https://svc.blockdaemon.com/universal/v1/ethereum/mainnet';
+const testKey = 'x8lHWJCiRCg1TWaMpYjOSFf8vO3FqJc3mFnq2GjmozabS7DS'
+// const baseUrl = 'https://ubiquity.api.blockdaemon.com/v1/nft/ethereum/mainnet';
+const baseUrl = 'https://svc.blockdaemon.com/nft/v1/ethereum/mainnet';
 const headers = new HttpHeaders({
   'Content-Type': 'application/json',
   'Authorization': `Bearer ${apiKey}`

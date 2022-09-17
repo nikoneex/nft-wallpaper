@@ -30,14 +30,16 @@ export class SettingsService {
     scrollbar: { draggable: true },
     keyboard: { enabled: true },
   }
+  config$: Subject<SwiperOptions> = new Subject<SwiperOptions>()
 
 
 
   bgColor = 'bg-zinc-700';
-  bgColorSubscription: Subject<string> = new Subject<string>()
+  bgColor$: Subject<string> = new Subject<string>()
   
+  feedLayout = 1;
+  feedLayout$: Subject<number> = new Subject<number>()
 
-  configSubscription: Subject<SwiperOptions> = new Subject<SwiperOptions>()
 
   // config : SwiperOptions = {
   //   slidesPerView: 1,
@@ -52,15 +54,20 @@ export class SettingsService {
   constructor() { 
   }
 
+  updateLayout(layout: number) {
+    this.feedLayout = layout;
+    this.feedLayout$.next(this.feedLayout);
+  }
+
   updateBgColor(color: string) {
     this.bgColor = color;
-    this.bgColorSubscription.next(this.bgColor);
+    this.bgColor$.next(this.bgColor);
   }
 
 
   updateConfig(config: SwiperOptions) {
     this.config = config;
-    this.configSubscription.next(this.config);
+    this.config$.next(this.config);
   }
 
   updateEffects(i: number){

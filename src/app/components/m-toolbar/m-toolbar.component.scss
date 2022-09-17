@@ -1,45 +1,42 @@
-.drawer {
-    top: -13rem;
-    padding-bottom: 4rem;
-}
-
-.toolbar-label {
-    font-family: "Comfortaa", cursive !important;
-    margin-top: 1rem!important;
-}
-
-.clock-container {
-    width: 100%;
-    height: 20%;
-}
-
 .toolbar-container {
-    > div {
-        position: fixed;
-        right: 0;
-        height: 100%;
-        padding-top: 2rem;
-        padding-right: 2rem;
-        padding-bottom: 2rem;
-        > div {
-            width: 18rem;
-            height: 100%;
-            > .flex {
-            }
-        }
-    }
+    // width: 100vw;
+    // height: 100vh;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
 }
 
-.tool-container {
-    width: 100%!important;
+.toolbar {
+    height: 6rem;
+    width: 100%;
+    z-index: 1000;
 }
 
-.autoplay-container {
-    // min-height: 12em;
+.toolbar-search {
+    width: 100%;
+    z-index: 1000;
 }
 
-#delaySlider {
-    width: 60%;
+.btn-toggle {
+    height: 50px;
+}
+
+#load-btn {
+    height: 50px!important;
+}
+
+#colorbtn {
+    height: 32px!important;
+    width: 32px!important;
+}
+
+#search-input {
+    caret-color: rgb(226 232 240)!important;
+}
+
+#resetbtn {
+    margin-top: 2px;
+    margin-right: 4px;
 }
 
 .color-picker {
@@ -60,38 +57,17 @@
     }
 }
 
-.collection-logo {
-    max-height: 48px;
-    max-width: 48px;
-}
-
-#autoplay {
-    &:hover {
-        background-color: opacity($color: 0)!important;
-    }
-}
-
-#search-input {
-    caret-color: rgb(226 232 240)!important;
-}
-
-
-#colorbtn {
-    height: 20px!important;
-    width: 20px!important;
-}
-
-#resetbtn {
-    margin-top: 2px;
-    margin-right: 4px;
-}
-
 ::ng-deep {
-    .mat-slide-toggle {
-        // transform: scale(1.5)!important;
-        &:hover {
-            background-color: transparent!important;
-        }
+    .mat-button-toggle-label-content {
+        padding: 0 16px!important;
+    }
+
+    .mat-button-toggle-group {
+        border-radius: 6px!important;
+    }
+    
+    .mat-button-toggle {
+        display: flex;
     }
     .mat-form-field-infix {
         background-color: rgb(39 39 42);
@@ -130,6 +106,9 @@
     }
     .mat-option {
         height: 64px!important;
+    }
+    .mat-form-field-infix {
+        width: 256px!important;
     }
 }
 

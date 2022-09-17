@@ -24,6 +24,10 @@ import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MToolbarComponent } from './components/m-toolbar/m-toolbar.component';
+import { MFeedViewComponent } from './components/m-feed-view/m-feed-view.component';
+import { ClockComponent } from './components/clock/clock.component';
 
 
 export const customTooltip: MatTooltipDefaultOptions = {
@@ -39,6 +43,9 @@ export const customTooltip: MatTooltipDefaultOptions = {
     ToolbarComponent,
     WallpaperComponent,
     ColorPickerComponent,
+    MToolbarComponent,
+    MFeedViewComponent,
+    ClockComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -57,7 +64,8 @@ export const customTooltip: MatTooltipDefaultOptions = {
     MatTabsModule,
     MatTooltipModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    MatButtonToggleModule
   ],
   providers: [
     {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: customTooltip}
